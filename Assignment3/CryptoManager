@@ -1,0 +1,87 @@
+/*
+ * Class: CMSC203 
+ * Instructor:Ashique Tanveer
+ * Description: This is a data manager class that determines whether string inputted through javaFX is within bounds. 
+ * It also builds the caesar or bellaso encrypted string of the input by user. Also builds decrypted string based on two encryptions.
+* Due: 03/04/2024
+ * Platform/compiler: Eclipse
+ * I pledge that I have completed the programming  assignment independently. 
+*  I have not copied the code from a student or any source. 
+*  I have not given my code to any student.
+*  Print your Name here: Dylan Avallone
+*/
+
+package Application;
+
+public class CryptoManager
+{
+
+  private static final char LOWER_BOUND = ' ';
+  private static final char UPPER_BOUND = '_';
+  private static final int RANGE = UPPER_BOUND - LOWER_BOUND + 1;
+
+  public static boolean isStringInBounds (String plainText)
+  {
+	for (int i = 0; i < plainText.length (); i++)
+	  {
+		if (plainText.charAt (i) < LOWER_BOUND
+			|| plainText.charAt (i) > UPPER_BOUND)
+		  {	
+			return false;
+		  }
+	  }
+	return true;
+  }
+
+  public static String caesarEncryption (String plainText, int key)
+  {
+	if (!isStringInBounds (plainText))
+	  {
+		return "The selected string is not in bounds. Try again.";
+	  }
+
+	StringBuilder encrypted = new StringBuilder ();
+	for (int i = 0; i < plainText.length (); i++)
+	  {
+		char ch =
+		  (char) (((int) plainText.charAt (i) + key - LOWER_BOUND) % RANGE +
+				  LOWER_BOUND);
+		encrypted.append (ch);
+	  }
+	return encrypted.toString ();
+  }
+
+  public static String caesarDecryption (String encryptedText, int key)
+  {
+	return caesarEncryption (encryptedText, RANGE - key);
+  }
+
+  public static String bellasoEncryption (String plainText, String bellasoStr)
+  {
+	StringBuilder encrypted = new StringBuilder ();
+	for (int i = 0; i < plainText.length (); i++)
+	  {
+		int key = bellasoStr.charAt (i % bellasoStr.length ()) - LOWER_BOUND;
+		char ch =
+		  (char) (((int) plainText.charAt (i) + key - LOWER_BOUND) % RANGE +
+				  LOWER_BOUND);
+		encrypted.append (ch);
+	  }
+	return encrypted.toString ();
+  }
+
+  public static String bellasoDecryption (String encryptedText,
+										  String bellasoStr)
+  {
+	StringBuilder decrypted = new StringBuilder ();
+	for (int i = 0; i < encryptedText.length (); i++)
+	  {
+		int key = bellasoStr.charAt (i % bellasoStr.length ()) - LOWER_BOUND;
+		char ch =
+		  (char) (((int) encryptedText.charAt (i) - key - LOWER_BOUND +
+				   RANGE) % RANGE + LOWER_BOUND);
+		decrypted.append (ch);
+	  }
+	return decrypted.toString ();
+  }
+}
